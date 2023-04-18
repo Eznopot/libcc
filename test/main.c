@@ -11,18 +11,20 @@
 #include "../vector/vector.h"
 
 int main(int argc, const char *argv[]) {
-    char elem[] = "remertyuihugyftrertytrezertyy";
-    char elem2[] = "fesfesfes";
-    //int elem = 1234567;
+    char elem[] = "testing 1";
+    char elem2[] = "testing 2";
+    char elem3[] = "testing 3";
+    char elem4[] = "testing 4";
+
+    char elem5[] = "-----";
+
     struct Vector vector = Vector(sizeof(char *));
 
     vector.pushBack(&vector, &elem, sizeof(elem));
-    vector.pushBack(&vector, &elem2, sizeof(elem2));
-    //printf("%s\n", vector.data);
-    printf("%s\n", (char *)(vector.data[0]));
-    printf("%s\n", (char *)(vector.data[1]));
+    //vector.pushBack(&vector, &elem2, sizeof(elem2));
 
     test(&vector);
+
 
     _Vector(&vector);
     return 0;

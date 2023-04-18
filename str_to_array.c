@@ -17,7 +17,7 @@ char **f_str_to_array(const char *str, char to_split, bool included) {
     }
     res = malloc((nb_raw + 1) * sizeof(char *));
     for (i = 0; i < nb_raw; i++) {
-        for (l; str[l] != to_split && str[i]; l++);
+        while (str[l++] != to_split && str[i]);
         l += included ? 1 : 0;
         res[i] = malloc((l - j + 1) * sizeof(char));
         j += i == 0 ? 0 : !included ? 1 : 0;

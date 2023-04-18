@@ -243,7 +243,7 @@ struct String replaceString(struct String *this, int posStart, int len, struct S
     for (i = 0; this->data[l] && i < posStart; i++) {
         res.data[i] = this->data[l++];
     }
-    for (i; replaceString->data[tmp]; i++) {
+    for (i = i; replaceString->data[tmp]; i++) {
         res.data[i] = replaceString->data[tmp++];
     }
     for (l = l + len; this->data[l]; i++) {
@@ -273,7 +273,7 @@ struct String insertString(struct String *this, int posStart, struct String *ins
     for (i = 0; this->data[l] && i < posStart; i++) {
         res.data[i] = this->data[l++];
     }
-    for (i; insertString->data[tmp]; i++) {
+    for (i = i; insertString->data[tmp]; i++) {
         res.data[i] = insertString->data[tmp++];
     }
     for (l = l; this->data[l]; i++) {

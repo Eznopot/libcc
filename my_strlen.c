@@ -10,6 +10,6 @@ int rec_strlen(int index, const char *string) {
 
 int my_strlen(const char *string) {
     int i = 0;
-    for (i; string[i]; i++);
+    while(string[i++]);
     return i;
 }
