@@ -54,5 +54,35 @@ int main(int argc, const char *argv[]) {
 
     _Vector(&vec2);
 
+
+
+    struct String concStr = String("Hello Worlddddd");
+    struct String concStr2 = String("This is a test");
+    struct String concStr3 = String("Hope it works");
+
+    struct Vector concVec = Vector(sizeof(struct String));
+    concVec.pushBack(&concVec, &concStr, sizeof(concStr));
+    concVec.pushBack(&concVec, &concStr2, sizeof(concStr2));
+    concVec.pushBack(&concVec, &concStr3, sizeof(concStr3));
+
+    struct Vector concVec2 = Vector(sizeof(struct String));
+    concVec2.pushBack(&concVec2, &concStr, sizeof(concStr));
+    concVec2.pushBack(&concVec2, &concStr2, sizeof(concStr2));
+
+    struct Vector concVec3 = concVec.concat(&concVec, &concVec2);
+    
+    for (int i = 0; i < concVec3.size(&concVec3); i++) {
+        struct String *str = (struct String *)concVec3.data[i];
+        printf("%s\n", str->data);
+    }
+
+
+    _Vector(&concVec);
+    _Vector(&concVec2);
+    _Vector(&concVec3);
+    _String(&concStr);
+    _String(&concStr2);
+    _String(&concStr3);
+    
     return 0;
 }

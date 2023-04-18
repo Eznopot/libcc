@@ -1,6 +1,7 @@
 #include "vector.h"
 
 inline struct Vector Vector(size_t type) {
+    printf("Vector created %d\n", type);
     struct Vector vector;
     vector.type = type;
     vector.data = NULL;
@@ -77,12 +78,12 @@ struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     int len = this->size(this) + this->size(toAdd);
     res.data = malloc(sizeof(void *) * len);
     for (int i = 0; this->data[i]; i++) {
-        res.data[l] = malloc(sizeof(this->data[i]) * this->type);
-        memcpy(res.data[l++], this->data[i], sizeof(this->data[i]));
+        res.data[l] = malloc(this->type);
+        memcpy(res.data[l++], this->data[i], toAdd->type);
     }
     for (int i = 0; toAdd->data[i]; i++) {
-        res.data[l] = malloc(sizeof(toAdd->data[i]) * toAdd->type);
-        memcpy(res.data[l++], toAdd->data[i], sizeof(toAdd->data[i]) * toAdd->type);
+        res.data[l] = malloc(toAdd->type);
+        memcpy(res.data[l++], toAdd->data[i], toAdd->type);
     }
     res.data[l] = NULL;
     return res;
