@@ -1,5 +1,14 @@
 #include "vector.h"
 
+/**
+ * The function creates a new Vector struct and initializes its properties with function pointers.
+ * 
+ * @param type The "type" parameter in the function "Vector" is used to specify the data type of the
+ * elements that will be stored in the vector. It is of type "size_t", which is an unsigned integer
+ * type used to represent the size of objects in bytes.
+ * 
+ * @return A struct Vector object is being returned.
+ */
 inline struct Vector Vector(size_t type) {
     printf("Vector created %d\n", type);
     struct Vector vector;
@@ -13,6 +22,12 @@ inline struct Vector Vector(size_t type) {
     return vector;
 }
 
+/**
+ * The function frees the memory allocated for the data array in a Vector struct.
+ * 
+ * @param this The parameter "this" is a pointer to a struct Vector. It is used to refer to the current
+ * instance of the struct Vector within the function.
+ */
 void _Vector(struct Vector *this) {
     for (int i = 0; this->data[i]; i++) {
         free(this->data[i]);
@@ -20,6 +35,16 @@ void _Vector(struct Vector *this) {
     free(this->data);
 }
 
+/**
+ * The function returns the size of a vector by iterating through its data array.
+ * 
+ * @param this The parameter "this" is a pointer to a struct Vector. It is used to access the data
+ * stored in the Vector structure.
+ * 
+ * @return The function `sizeVector` returns the number of elements in the vector represented by the
+ * `struct Vector` pointer `this`. If the vector is empty (i.e., `this->data` is `NULL`), the function
+ * returns `-1`.
+ */
 int sizeVector(struct Vector *this) {
     int i;
 
@@ -29,17 +54,18 @@ int sizeVector(struct Vector *this) {
     return i;
 }
 
-int getMallocSize(struct Vector *this) {
-    int res = 0;
-
-    if (this->data == NULL)
-        return -1;
-    for (int i = 0; this->data[i]; i++) {
-        res += sizeof(this->data[i]);
-    }
-    return res;
-}
-
+/**
+ * This function adds an element to the end of a dynamic array.
+ * 
+ * @param this a pointer to a struct Vector, which contains information about the vector (such as its
+ * size and data)
+ * @param data A pointer to the data that needs to be added to the vector.
+ * @param size The size parameter in the pushBackElem function is the size of the data being added to
+ * the vector. It is used to allocate memory for the new element being added to the vector.
+ * 
+ * @return an integer value. If the data parameter is NULL, it returns -1 indicating an error.
+ * Otherwise, it returns 0 indicating success.
+ */
 int pushBackElem(struct Vector *this, void *data, int size) {
     if (data == NULL)
         return -1;
@@ -58,6 +84,16 @@ int pushBackElem(struct Vector *this, void *data, int size) {
     return 0;
 }
 
+/**
+ * This function removes the last element from a vector and frees its memory.
+ * 
+ * @param this The parameter "this" is a pointer to a struct Vector, which is a user-defined data
+ * structure that represents a dynamic array. The function popBackElem() is a member function of this
+ * struct, which means it operates on an instance of the struct that is passed as the "this" parameter.
+ * 
+ * @return an integer value. If the operation is successful, it returns 0. If there is an error, it
+ * returns -1.
+ */
 int popBackElem(struct Vector *this) {
     if (this->data == NULL)
         return -1;
@@ -70,6 +106,18 @@ int popBackElem(struct Vector *this) {
     return 0;
 }
 
+/**
+ * The function concatenates two vectors of the same type and returns a new vector containing all the
+ * elements of both input vectors. /!\ The function does not work with char * and int *.
+ * 
+ * @param this The "this" parameter is a pointer to a struct Vector object, which represents the vector
+ * that the function is being called on.
+ * @param toAdd The "toAdd" parameter is a pointer to a struct Vector that represents the vector to be
+ * concatenated with the "this" vector.
+ * 
+ * @return The function `concatVector` returns a new `Vector` that is the concatenation of two input
+ * `Vector` objects.
+ */
 struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     if (this->type != toAdd->type) // si les type sont differents alors on return un vector vide
         return Vector(this->type);
@@ -89,6 +137,22 @@ struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     return res;
 }
 
+/**
+ * The function inserts an element into a vector at a specified index.
+ * 
+ * @param this a pointer to a struct Vector object
+ * @param data A pointer to the data that needs to be inserted into the vector.
+ * @param size The size parameter in the insertElem function refers to the size of the data being
+ * inserted into the vector. It is used to allocate memory for the new element being added to the
+ * vector.
+ * @param index The index parameter in the insertElem function refers to the position at which the new
+ * element is to be inserted in the vector. It is an integer value that represents the index of the
+ * element in the vector. If the index is 0, the new element will be inserted at the beginning of the
+ * vector
+ * 
+ * @return an integer value. If the insertion is successful, it returns 0. If the data parameter is
+ * NULL or if the index is out of bounds, it returns -1.
+ */
 int insertElem(struct Vector *this, void *data, int size, int index) {
     if (data == NULL)
         return -1;
@@ -112,6 +176,13 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
     return 0;
 }
 
+/**
+ * The function iterates through a vector's data and prints its type. only for testing purposes.
+ * 
+ * @param this The parameter "this" is a pointer to a struct Vector.
+ * 
+ * @return an integer value of 0.
+ */
 int test(struct Vector *this) {
     for (int i = 0; this->data[i]; i++) {
         printf("%s\n", (char *)(this->data[i]));
