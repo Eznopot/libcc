@@ -18,7 +18,6 @@ void _Vector(struct Vector *this);
 int pushBackElem(struct Vector *this, void *data, int size);
 int popBackElem(struct Vector *this);
 int sizeVector(struct Vector *this);
-struct Vector concatVector(struct Vector *this, struct Vector *toAdd);
 int insertElem(struct Vector *this, void *data, int size, int pos);
 
 int test(struct Vector *this);

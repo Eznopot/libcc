@@ -6,7 +6,6 @@ inline struct Vector Vector(size_t type) {
     vector.data = NULL;
     vector.pushBack = (&pushBackElem);
     vector.popBack = (&popBackElem);
-    vector.concat = (&concatVector);
     vector.insert = (&insertElem);
     vector.size = (&sizeVector);
     return vector;
@@ -44,14 +43,14 @@ int pushBackElem(struct Vector *this, void *data, int size) {
         return -1;
     if (this->data == NULL) {
         this->data = malloc(sizeof(void *) * (2));
-        this->data[0] = malloc(size * this->type);
-        memcpy(this->data[0], data, size * this->type);
+        this->data[0] = malloc(size);
+        memcpy(this->data[0], data, size);
         this->data[1] = NULL;
     } else {
         int len = this->size(this);
         this->data = realloc(this->data, sizeof(void *) * (len + 2));
-        this->data[len] = malloc(size * this->type);
-        memcpy(this->data[len], data, size * this->type);
+        this->data[len] = malloc(size);
+        memcpy(this->data[len], data, size);
         this->data[len + 1] = NULL;
     }
     return 0;
@@ -69,25 +68,7 @@ int popBackElem(struct Vector *this) {
     return 0;
 }
 
-struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
-    if (this->type != toAdd->type)
-        return Vector(this->type);
-    struct Vector res = Vector(this->type);
-    int l = 0;
-    int len = this->size(this) + this->size(toAdd);
-    res.data = malloc(sizeof(void *) * len);
-    for (int i = 0; this->data[i]; i++) {
-        res.data[l] = malloc(sizeof(this->data[i]) * this->type);
-        printf("l: %s\n", (char *)(this->data[i]));
-        memcpy(res.data[l++], this->data[i], sizeof(this->data[i]) * this->type);
-    }
-    for (int i = 0; toAdd->data[i]; i++) {
-        res.data[l] = malloc(sizeof(toAdd->data[i]) * toAdd->type);
-        memcpy(res.data[l++], toAdd->data[i], sizeof(toAdd->data[i]) * toAdd->type);
-    }
-    res.data[l] = NULL;
-    return res;
-}
+// create a function that concat 2 struct Vector and return a new one
 
 int insertElem(struct Vector *this, void *data, int size, int index) {
     if (data == NULL)
@@ -116,7 +97,6 @@ int test(struct Vector *this) {
     for (int i = 0; this->data[i]; i++) {
         printf("%s\n", (char *)(this->data[i]));
     }
-    printf("type :");
     if (this->type == sizeof(char)) {
         printf("char ");
     }
