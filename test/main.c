@@ -43,9 +43,9 @@ int main(int argc, const char *argv[]) {
 
 
     struct Vector vec2 = Vector(sizeof(int *));
-    vec2.pushBack(&vec2, &(int){1}, sizeof(int));
-    vec2.pushBack(&vec2, &(int){2}, sizeof(int));
-    vec2.pushBack(&vec2, &(int){3}, sizeof(int));
+    vec2.pushBack(&vec2, &(int){1}, sizeof(int *));
+    vec2.pushBack(&vec2, &(int){2}, sizeof(int *));
+    vec2.pushBack(&vec2, &(int){3}, sizeof(int *));
 
     for (int i = 0; i < vec2.size(&vec2); i++) {
        int *str = (int *)vec2.data[i];
