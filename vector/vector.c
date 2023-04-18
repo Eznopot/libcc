@@ -7,6 +7,7 @@ inline struct Vector Vector(size_t type) {
     vector.pushBack = (&pushBackElem);
     vector.popBack = (&popBackElem);
     vector.insert = (&insertElem);
+    vector.concat = (&concatVector);
     vector.size = (&sizeVector);
     return vector;
 }
@@ -68,7 +69,24 @@ int popBackElem(struct Vector *this) {
     return 0;
 }
 
-// create a function that concat 2 struct Vector and return a new one
+struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
+    if (this->type != toAdd->type) // si les type sont differents alors on return un vector vide
+        return Vector(this->type);
+    struct Vector res = Vector(this->type);
+    int l = 0;
+    int len = this->size(this) + this->size(toAdd);
+    res.data = malloc(sizeof(void *) * len);
+    for (int i = 0; this->data[i]; i++) {
+        res.data[l] = malloc(sizeof(this->data[i]) * this->type);
+        memcpy(res.data[l++], this->data[i], sizeof(this->data[i]));
+    }
+    for (int i = 0; toAdd->data[i]; i++) {
+        res.data[l] = malloc(sizeof(toAdd->data[i]) * toAdd->type);
+        memcpy(res.data[l++], toAdd->data[i], sizeof(toAdd->data[i]) * toAdd->type);
+    }
+    res.data[l] = NULL;
+    return res;
+}
 
 int insertElem(struct Vector *this, void *data, int size, int index) {
     if (data == NULL)

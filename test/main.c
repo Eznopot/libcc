@@ -11,31 +11,48 @@
 #include "../vector/vector.h"
 
 int main(int argc, const char *argv[]) {
-    char elem[] = "testing 1";
-    char elem2[] = "testing 2";
-    char elem3[] = "testing 3";
-    char elem4[] = "testing 4";
+    struct String str = String("Hello Worlddddd");
+    struct String str2 = String("This is a test");
+    struct String str3 = String("Hope it works");
 
-    char elem5[] = "-----";
+    struct Vector vec = Vector(sizeof(struct String));
+    vec.pushBack(&vec, &str, sizeof(str));
+    vec.pushBack(&vec, &str2, sizeof(str2));
+    vec.pushBack(&vec, &str3, sizeof(str3));
 
-    struct Vector vector = Vector(sizeof(char *));
+    for (int i = 0; i < vec.size(&vec); i++) {
+        struct String *str = (struct String *)vec.data[i];
+        printf("%s\n", str->data);
+    }
+    printf("---------------------\n");
 
-    struct Vector vector2 = Vector(sizeof(char *));
+    struct String str4 = String("This is a new string");
 
-    vector.pushBack(&vector, &elem, sizeof(elem));
-    vector.pushBack(&vector, &elem2, sizeof(elem2));
-    //vector.pushBack(&vector, &("AHHHHH"), 8);
+    vec.insert(&vec, &str4, sizeof(struct String), 1);
 
-    vector2.pushBack(&vector2, &elem3, sizeof(elem3));
-    vector2.pushBack(&vector2, &elem4, sizeof(elem4));
+    for (int i = 0; i < vec.size(&vec); i++) {
+        struct String *str = (struct String *)vec.data[i];
+        printf("%s\n", str->data);
+    }
 
-    test(&vector);
-    test(&vector2);
+    _Vector(&vec);
+    _String(&str);
+    _String(&str2);
+    _String(&str3);
+    _String(&str4);
 
-    printf("\n\n");
 
+    struct Vector vec2 = Vector(sizeof(int *));
+    vec2.pushBack(&vec2, &(int){1}, sizeof(int));
+    vec2.pushBack(&vec2, &(int){2}, sizeof(int));
+    vec2.pushBack(&vec2, &(int){3}, sizeof(int));
 
-    _Vector(&vector);
-    _Vector(&vector2);
+    for (int i = 0; i < vec2.size(&vec2); i++) {
+       int *str = (int *)vec2.data[i];
+        printf("%d\n", *str);
+    }
+
+    _Vector(&vec2);
+
     return 0;
 }
