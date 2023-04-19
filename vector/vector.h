@@ -20,6 +20,7 @@ int popBackElem(struct Vector *this);
 int sizeVector(struct Vector *this);
 struct Vector concatVector(struct Vector *this, struct Vector *toAdd);
 int insertElem(struct Vector *this, void *data, int size, int pos);
+int removeElem(struct Vector *this, int pos);
 
 int test(struct Vector *this);
 
@@ -33,6 +34,7 @@ struct Vector {
     int (*popBack)(struct Vector *);
     struct Vector (*concat)(struct Vector *, struct Vector *);
     int (*insert)(struct Vector *, void *, int, int);
+    int (*remove)(struct Vector *, int);
     int (*size)(struct Vector *);
 
     void **data;

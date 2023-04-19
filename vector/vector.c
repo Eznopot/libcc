@@ -17,6 +17,7 @@ inline struct Vector Vector(size_t type) {
     vector.pushBack = (&pushBackElem);
     vector.popBack = (&popBackElem);
     vector.insert = (&insertElem);
+    vector.remove = (&removeElem);
     vector.concat = (&concatVector);
     vector.size = (&sizeVector);
     return vector;
@@ -192,6 +193,38 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         }
         this->sizeElem[index] = size;
     }
+    return 0;
+}
+
+/**
+ * The function removes an element from a vector at a specified index.
+ * 
+ * @param this The "this" parameter is a pointer to a struct Vector object, which represents the vector
+ * that the function is being called on.
+ * @param index The index parameter in the removeElem function refers to the position of the element
+ * to be removed from the vector. It is an integer value that represents the index of the element in
+ * the vector. If the index is 0, the first element will be removed from the vector.
+ * 
+ * @return an integer value. If the operation is successful, it returns 0. If the index is out of
+ * bounds, it returns -1.
+ */
+
+int removeElem(struct Vector *this, int index) {
+    if (this->data == NULL)
+        return -1;
+    int len = this->size(this);
+    if (index >= len)
+        return -1;
+    free(this->data[index]);
+    for (int i = index; i < len; i++) {
+        this->data[i] = this->data[i + 1];
+    }
+    this->data = realloc(this->data, sizeof(void *) * (len));
+    this->data[len - 1] = NULL;
+    for (int i = index; i < len; i++) {
+        this->sizeElem[i] = this->sizeElem[i + 1];
+    }
+    this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len - 1));
     return 0;
 }
 
