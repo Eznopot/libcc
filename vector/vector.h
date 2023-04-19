@@ -36,6 +36,7 @@ struct Vector {
     int (*size)(struct Vector *);
 
     void **data;
+    int * sizeElem;
     size_t type; // sizeof(char *) par exemple
 };
 #endif /* !VECTOR_H_ */

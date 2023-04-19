@@ -10,9 +10,9 @@
  * @return A struct Vector object is being returned.
  */
 inline struct Vector Vector(size_t type) {
-    printf("Vector created %d\n", type);
     struct Vector vector;
     vector.type = type;
+    vector.sizeElem = NULL;
     vector.data = NULL;
     vector.pushBack = (&pushBackElem);
     vector.popBack = (&popBackElem);
@@ -29,10 +29,14 @@ inline struct Vector Vector(size_t type) {
  * instance of the struct Vector within the function.
  */
 void _Vector(struct Vector *this) {
-    for (int i = 0; this->data[i]; i++) {
-        free(this->data[i]);
+    if (this->data != NULL) {
+        for (int i = 0; this->data[i]; i++) {
+            free(this->data[i]);
+        }
+        free(this->data);
     }
-    free(this->data);
+    if (this->sizeElem != NULL)
+        free(this->sizeElem);
 }
 
 /**
@@ -74,12 +78,16 @@ int pushBackElem(struct Vector *this, void *data, int size) {
         this->data[0] = malloc(size);
         memcpy(this->data[0], data, size);
         this->data[1] = NULL;
+        this->sizeElem = malloc(sizeof(int));
+        this->sizeElem[0] = size;
     } else {
         int len = this->size(this);
         this->data = realloc(this->data, sizeof(void *) * (len + 2));
         this->data[len] = malloc(size);
         memcpy(this->data[len], data, size);
         this->data[len + 1] = NULL;
+        this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len + 1));
+        this->sizeElem[len] = size;
     }
     return 0;
 }
@@ -103,6 +111,7 @@ int popBackElem(struct Vector *this) {
     free(this->data[len - 1]);
     this->data = realloc(this->data, sizeof(void *) * (len));
     this->data[len - 1] = NULL;
+    this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len - 1));
     return 0;
 }
 
@@ -124,14 +133,17 @@ struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     struct Vector res = Vector(this->type);
     int l = 0;
     int len = this->size(this) + this->size(toAdd);
-    res.data = malloc(sizeof(void *) * len);
+    res.data = malloc(sizeof(void *) * len + 1);
+    res.sizeElem = malloc(sizeof(int) * len);
     for (int i = 0; this->data[i]; i++) {
-        res.data[l] = malloc(this->type);
-        memcpy(res.data[l++], this->data[i], toAdd->type);
+        res.data[l] = malloc(this->sizeElem[i]);
+        res.sizeElem[l] = this->sizeElem[i];
+        memcpy(res.data[l++], this->data[i], this->sizeElem[i]);
     }
     for (int i = 0; toAdd->data[i]; i++) {
-        res.data[l] = malloc(toAdd->type);
-        memcpy(res.data[l++], toAdd->data[i], toAdd->type);
+        res.data[l] = malloc(toAdd->sizeElem[i]);
+        res.sizeElem[l] = toAdd->sizeElem[i];
+        memcpy(res.data[l++], toAdd->data[i], toAdd->sizeElem[i]);
     }
     res.data[l] = NULL;
     return res;
@@ -161,6 +173,8 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         this->data[0] = malloc(size);
         memcpy(this->data[0], data, size);
         this->data[1] = NULL;
+        this->sizeElem = malloc(sizeof(int));
+        this->sizeElem[0] = size;
     } else if (this->data == NULL && index != 0) {
         return -1;
     } else {
@@ -172,6 +186,11 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         this->data[index] = malloc(size);
         memcpy(this->data[index], data, size);
         this->data[len + 1] = NULL;
+        this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len + 1));
+        for (int i = len; i > index; i--) {
+            this->sizeElem[i] = this->sizeElem[i - 1];
+        }
+        this->sizeElem[index] = size;
     }
     return 0;
 }

@@ -80,9 +80,31 @@ int main(int argc, const char *argv[]) {
     _Vector(&concVec);
     _Vector(&concVec2);
     _Vector(&concVec3);
+
     _String(&concStr);
     _String(&concStr2);
     _String(&concStr3);
     
+    concVec = Vector(sizeof(char *));
+    concVec.pushBack(&concVec, &"Hello", sizeof(char) * 6);
+    concVec.pushBack(&concVec, &"Debut", sizeof(char) * 6);
+    concVec.pushBack(&concVec, &"de", sizeof(char) * 3);
+
+    concVec2 = Vector(sizeof(char *));
+    concVec2.pushBack(&concVec2, &"phrase", sizeof(char) * 7);
+    concVec2.pushBack(&concVec2, &"simple", sizeof(char) * 7);
+
+    concVec3 = concVec.concat(&concVec, &concVec2);
+
+    for (int i = 0; i < concVec3.size(&concVec3); i++) {
+        char *str = (char *)concVec3.data[i];
+        printf("%s\n", str);
+    }
+
+
+    _Vector(&concVec);
+    _Vector(&concVec2);
+    _Vector(&concVec3);
+
     return 0;
 }
