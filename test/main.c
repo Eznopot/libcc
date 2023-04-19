@@ -10,6 +10,12 @@
 #include "../string/string.h"
 #include "../vector/vector.h"
 
+int cmp(const void *a, const void *b) {
+    const int **a2 = (const int **)a;
+    const int **b2 = (const int **)b;
+    return **a2 - **b2;
+}
+
 int main(int argc, const char *argv[]) {
     struct String str = String("Hello Worlddddd");
     struct String str2 = String("This is a test");
@@ -42,10 +48,18 @@ int main(int argc, const char *argv[]) {
     _String(&str3);
     _String(&str4);
 
-    struct Vector vec2 = Vector(sizeof(int *));
-    vec2.pushBack(&vec2, &(int){1}, sizeof(int *));
+    struct Vector vec2 = Vector(sizeof(void *));
     vec2.pushBack(&vec2, &(int){2}, sizeof(int *));
+    vec2.pushBack(&vec2, &(int){8}, sizeof(int *));
     vec2.pushBack(&vec2, &(int){3}, sizeof(int *));
+
+    for (int i = 0; i < vec2.size(&vec2); i++) {
+       int *str = (int *)vec2.data[i];
+        printf("%d\n", *str);
+    }
+    printf("---------------------\n");
+
+    vec2.sort(&vec2, cmp);
 
     for (int i = 0; i < vec2.size(&vec2); i++) {
        int *str = (int *)vec2.data[i];

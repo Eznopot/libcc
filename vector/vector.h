@@ -21,6 +21,7 @@ int sizeVector(struct Vector *this);
 struct Vector concatVector(struct Vector *this, struct Vector *toAdd);
 int insertElem(struct Vector *this, void *data, int size, int pos);
 int removeElem(struct Vector *this, int pos);
+int sortVector(struct Vector *this, int (cmp)(const void *, const void *));
 
 int test(struct Vector *this);
 
@@ -36,6 +37,7 @@ struct Vector {
     int (*insert)(struct Vector *, void *, int, int);
     int (*remove)(struct Vector *, int);
     int (*size)(struct Vector *);
+    int (*sort)(struct Vector *, int (const void *, const void *));
 
     void **data;
     int * sizeElem;

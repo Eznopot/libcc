@@ -20,6 +20,7 @@ inline struct Vector Vector(size_t type) {
     vector.remove = (&removeElem);
     vector.concat = (&concatVector);
     vector.size = (&sizeVector);
+    vector.sort = (&sortVector);
     return vector;
 }
 
@@ -195,6 +196,29 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
     }
     return 0;
 }
+
+/**
+ * The function sorts a vector using the provided comparison function.
+ * 
+ * @param this a pointer to a struct Vector object, which contains an array of data and information
+ * about its size and capacity.
+ * @param cmp cmp is a function pointer that points to a comparison function. This function is used to
+ * compare two elements of the vector during the sorting process. The comparison function takes two
+ * const void pointers as arguments and returns an integer value indicating the result of the
+ * comparison. The integer value should be negative if the first argument
+ * 
+ * @return an integer value. If the data pointer of the Vector struct is NULL, it returns -1 indicating
+ * an error. Otherwise, it sorts the data using the qsort function and returns 0 indicating success.
+ */
+int sortVector(struct Vector *this, int (*cmp)(const void *, const void *)) {
+    if (this->data == NULL)
+        return -1;
+    int len = this->size(this);
+
+    qsort(this->data, len, sizeof(void *), cmp);
+    return 0;
+}
+
 
 /**
  * The function removes an element from a vector at a specified index.
