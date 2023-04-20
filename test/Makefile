@@ -10,6 +10,7 @@ SRC =	main.c \
 		../str_to_array.c \
 		../string/string.c \
 		../vector/vector.c \
+		../list/list.c \
 
 COMP =	gcc -g3
 

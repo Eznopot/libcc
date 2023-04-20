@@ -9,6 +9,7 @@
 #include "../include.h"
 #include "../string/string.h"
 #include "../vector/vector.h"
+#include "../list/list.h"
 
 int cmp(const void *a, const void *b) {
     const int **a2 = (const int **)a;
@@ -17,11 +18,11 @@ int cmp(const void *a, const void *b) {
 }
 
 int main(int argc, const char *argv[]) {
-    struct String str = String("Hello Worlddddd");
+    struct String *str = new_String("Hello Worlddddd");
     struct String str2 = String("This is a test");
     struct String str3 = String("Hope it works");
     struct Vector vec = Vector(sizeof(struct String));
-    vec.pushBack(&vec, &str, sizeof(str));
+    vec.pushBack(&vec, str, sizeof(*str));
     vec.pushBack(&vec, &str2, sizeof(str2));
     vec.pushBack(&vec, &str3, sizeof(str3));
     for (int i = 0; i < vec.size(&vec); i++) {
@@ -43,7 +44,8 @@ int main(int argc, const char *argv[]) {
     }
     printf("---------------------\n");
     _Vector(&vec);
-    _String(&str);
+    _String(str);
+    free(str);
     _String(&str2);
     _String(&str3);
     _String(&str4);
@@ -118,5 +120,43 @@ int main(int argc, const char *argv[]) {
     _Vector(&concVec2);
     _Vector(&concVec3);
 
+
+    struct List list = List(sizeof(struct String));
+    str = new_String("Test");
+    str2 = String("avec");
+    str3 = String("String");
+
+    list.pushBack(&list, str, sizeof(struct String));
+    list.pushBack(&list, &str2, sizeof(struct String));
+    list.pushBack(&list, &str3, sizeof(struct String));
+
+    printList(&list);
+
+    str4 = String("insert");
+    list.insert(&list, &str4, sizeof(struct String), 1);
+
+    printList(&list);
+
+    list.remove(&list, 1);
+
+    printList(&list);
+
+    struct List list2 = List(sizeof(struct String));
+    list2.pushBack(&list2, str, sizeof(struct String));
+    list2.pushBack(&list2, &str2, sizeof(struct String));
+    list2.pushBack(&list2, &str3, sizeof(struct String));
+
+    struct List list3 = list.concat(&list, &list2);
+
+    printList(&list3);
+
+    _List(&list);
+    _List(&list2);
+    _List(&list3);
+    _String(str);
+    _String(&str2);
+    _String(&str3);
+    _String(&str4);
+    free(str);
     return 0;
 }

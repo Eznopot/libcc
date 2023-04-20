@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** LIBCC
 ** File description:
-** string
+** vector
 */
 
 #ifndef VECTOR_H_
