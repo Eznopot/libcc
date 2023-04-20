@@ -21,6 +21,7 @@ int sizeList(struct List *this);
 struct List concatList(struct List *this, struct List *toAdd);
 int insertNode(struct List *this, void *data, int size, int pos);
 int removeNode(struct List *this, int pos);
+int reverseList(struct List *this);
 int printList(struct List *this);
 
 struct Node {
@@ -36,6 +37,7 @@ struct List {
     struct List (*concat)(struct List *, struct List *);
     int (*insert)(struct List *, void *, int, int);
     int (*remove)(struct List *, int);
+    int (*reverse)(struct List *);
     int (*size)(struct List *);
 
     struct Node *head;

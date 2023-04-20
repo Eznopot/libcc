@@ -150,6 +150,10 @@ int main(int argc, const char *argv[]) {
 
     printList(&list3);
 
+    list3.reverse(&list3);
+
+    printList(&list3);
+
     _List(&list);
     _List(&list2);
     _List(&list3);
