@@ -19,6 +19,7 @@ inline struct Vector Vector(size_t type) {
     vector.insert = (&insertElem);
     vector.remove = (&removeElem);
     vector.concat = (&concatVector);
+    vector.reverse = (&reverseVector);
     vector.size = (&sizeVector);
     vector.sort = (&sortVector);
     return vector;
@@ -194,6 +195,24 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         }
         this->sizeElem[index] = size;
     }
+    return 0;
+}
+
+int reverseVector(struct Vector *this) {
+    if (this->data == NULL)
+        return -1;
+    int len = this->size(this);
+    void **tmp = malloc(sizeof(void *) * (len + 1));
+    int *tmpSize = malloc(sizeof(int) * (len));
+    for (int i = 0; i < len; i++) {
+        tmp[i] = this->data[len - i - 1];
+        tmpSize[i] = this->sizeElem[len - i - 1];
+    }
+    tmp[len] = NULL;
+    free(this->data);
+    free(this->sizeElem);
+    this->data = tmp;
+    this->sizeElem = tmpSize;
     return 0;
 }
 

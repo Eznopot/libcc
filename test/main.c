@@ -116,6 +116,14 @@ int main(int argc, const char *argv[]) {
     }
     printf("---------------------\n");
 
+    concVec3.reverse(&concVec3);
+
+    for (int i = 0; i < concVec3.size(&concVec3); i++) {
+        char *str = (char *)concVec3.data[i];
+        printf("%s\n", str);
+    }
+    printf("---------------------\n");
+
     _Vector(&concVec);
     _Vector(&concVec2);
     _Vector(&concVec3);
