@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../include.h"
+#include "../string/string.h"
 
 struct Vector Vector(size_t type);
 void _Vector(struct Vector *this);
@@ -25,6 +26,7 @@ int reverseVector(struct Vector *this);
 int sortVector(struct Vector *this, int (cmp)(const void *, const void *));
 
 int test(struct Vector *this);
+int printVector(struct Vector *this);
 
 /* This lib is a like vector in c++, you can create list from every type.
 ** /!\ whe you need to get the data, you get a ptr on the type: int -> int *, char -> char *
@@ -43,6 +45,7 @@ struct Vector {
 
     void **data;
     int * sizeElem;
+    int mallocSize;
     size_t type; // sizeof(char *) par exemple
 };
 #endif /* !VECTOR_H_ */

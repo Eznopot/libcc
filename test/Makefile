@@ -5,8 +5,13 @@
 ## bsq
 ##
 
-SRC =	main.c \
-		../my_strlen.c \
+MAIN =	main.c
+
+MAIN_list =	main_list.c
+
+MAIN_vector =	main_vector.c
+
+SRC =	../my_strlen.c \
 		../str_to_array.c \
 		../string/string.c \
 		../vector/vector.c \
@@ -20,10 +25,18 @@ NAME	=	test
 
 CFLAG	=	-o
 
-all:	$(NAME)
+all:	$(NAME) list vector
 
 $(NAME):	$(OBJ)
-	$(COMP) $(SRC) $(CFLAG) $(NAME) -ldl
+	$(COMP) $(SRC) $(MAIN) $(CFLAG) $(NAME) -ldl
+	rm -f $(OBJ)
+
+list:	$(OBJ)
+	$(COMP) $(SRC) $(MAIN_list) $(CFLAG) list -ldl
+	rm -f $(OBJ)
+
+vector:	$(OBJ)
+	$(COMP) $(SRC) $(MAIN_vector) $(CFLAG) vector -ldl
 	rm -f $(OBJ)
 
 clean:
@@ -31,6 +44,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f ../$(NAME)
+	rm -f list
+	rm -f vector
 
 re: all clean

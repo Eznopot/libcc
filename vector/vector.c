@@ -22,6 +22,7 @@ inline struct Vector Vector(size_t type) {
     vector.reverse = (&reverseVector);
     vector.size = (&sizeVector);
     vector.sort = (&sortVector);
+    vector.mallocSize = 0;
     return vector;
 }
 
@@ -77,6 +78,7 @@ int pushBackElem(struct Vector *this, void *data, int size) {
     if (data == NULL)
         return -1;
     if (this->data == NULL) {
+        this->mallocSize = 2;
         this->data = malloc(sizeof(void *) * (2));
         this->data[0] = malloc(size);
         memcpy(this->data[0], data, size);
@@ -85,11 +87,14 @@ int pushBackElem(struct Vector *this, void *data, int size) {
         this->sizeElem[0] = size;
     } else {
         int len = this->size(this);
-        this->data = realloc(this->data, sizeof(void *) * (len + 2));
+        if (len + 1 >= this->mallocSize) {
+            this->mallocSize += 20;
+            this->data = realloc(this->data, sizeof(void *) * (this->mallocSize));
+            this->sizeElem = realloc(this->sizeElem, sizeof(int) * (this->mallocSize));
+        }
         this->data[len] = malloc(size);
         memcpy(this->data[len], data, size);
         this->data[len + 1] = NULL;
-        this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len + 1));
         this->sizeElem[len] = size;
     }
     return 0;
@@ -112,9 +117,7 @@ int popBackElem(struct Vector *this) {
     if (len == 0)
         return -1;
     free(this->data[len - 1]);
-    this->data = realloc(this->data, sizeof(void *) * (len));
     this->data[len - 1] = NULL;
-    this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len - 1));
     return 0;
 }
 
@@ -136,7 +139,8 @@ struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     struct Vector res = Vector(this->type);
     int l = 0;
     int len = this->size(this) + this->size(toAdd);
-    res.data = malloc(sizeof(void *) * len + 1);
+    res.data = malloc(sizeof(void *) * len + 15);
+    res.mallocSize = len + 15;
     res.sizeElem = malloc(sizeof(int) * len);
     for (int i = 0; this->data[i]; i++) {
         res.data[l] = malloc(this->sizeElem[i]);
@@ -173,6 +177,7 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         return -1;
     if (this->data == NULL && index == 0) {
         this->data = malloc(sizeof(void *) * (2));
+        this->mallocSize = 2;
         this->data[0] = malloc(size);
         memcpy(this->data[0], data, size);
         this->data[1] = NULL;
@@ -182,14 +187,17 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         return -1;
     } else {
         int len = this->size(this);
-        this->data = realloc(this->data, sizeof(void *) * (len + 2));
+        if (len + 1 >= this->mallocSize) {
+            this->mallocSize += 20;
+            this->data = realloc(this->data, sizeof(void *) * (this->mallocSize));
+            this->sizeElem = realloc(this->sizeElem, sizeof(int) * (this->mallocSize));
+        }
         for (int i = len; i > index; i--) {
             this->data[i] = this->data[i - 1];
         }
         this->data[index] = malloc(size);
         memcpy(this->data[index], data, size);
         this->data[len + 1] = NULL;
-        this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len + 1));
         for (int i = len; i > index; i--) {
             this->sizeElem[i] = this->sizeElem[i - 1];
         }
@@ -202,8 +210,8 @@ int reverseVector(struct Vector *this) {
     if (this->data == NULL)
         return -1;
     int len = this->size(this);
-    void **tmp = malloc(sizeof(void *) * (len + 1));
-    int *tmpSize = malloc(sizeof(int) * (len));
+    void **tmp = malloc(sizeof(void *) * (this->mallocSize));
+    int *tmpSize = malloc(sizeof(int) * (this->mallocSize));
     for (int i = 0; i < len; i++) {
         tmp[i] = this->data[len - i - 1];
         tmpSize[i] = this->sizeElem[len - i - 1];
@@ -268,6 +276,18 @@ int removeElem(struct Vector *this, int index) {
         this->sizeElem[i] = this->sizeElem[i + 1];
     }
     this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len - 1));
+    return 0;
+}
+
+int printVector(struct Vector *this) {
+    if (this->data == NULL)
+        return -1;
+    for (int i = 0; this->data[i]; i++) {
+        struct String *stmp = (struct String *)this->data[i];
+        printf("%s\n", stmp->data);
+    }
+    printf("---------------------\n");
+    
     return 0;
 }
 
