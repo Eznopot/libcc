@@ -14,7 +14,7 @@
 #include "../include.h"
 #include "../string/string.h"
 
-struct Vector Vector(size_t type);
+struct Vector Vector(size_t type, int size);
 void _Vector(struct Vector *this);
 int pushBackElem(struct Vector *this, void *data, int size);
 int popBackElem(struct Vector *this);
@@ -39,7 +39,7 @@ struct Vector {
     struct Vector (*concat)(struct Vector *, struct Vector *);
     int (*insert)(struct Vector *, void *, int, int);
     int (*remove)(struct Vector *, int);
-    int (*size)(struct Vector *);
+    int size;
     int (*reverse)(struct Vector *);
     int (*sort)(struct Vector *, int (const void *, const void *));
 

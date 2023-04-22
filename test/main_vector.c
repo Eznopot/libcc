@@ -18,12 +18,12 @@ int cmp(const void *a, const void *b) {
 }
 
 int main(int argc, const char *argv[]) {
-struct Vector list = Vector(sizeof(struct String));
+    struct Vector list = Vector(sizeof(struct String), 0);
     struct String str = String("Test");
     struct String str2 = String("avec");
     struct String str3 = String("String");
 
-    float startTime = (float)clock();
+    float startTime = (float)clock()/CLOCKS_PER_SEC * 1000;
 
     for (int i = 0; i < 100000; i++) {
         list.pushBack(&list, &str, sizeof(struct String));
@@ -31,7 +31,7 @@ struct Vector list = Vector(sizeof(struct String));
         list.pushBack(&list, &str3, sizeof(struct String));
     }
 
-    float endTime = (float)clock();
+    float endTime = (float)clock()/CLOCKS_PER_SEC * 1000;
 
     float timeElapsed = endTime - startTime;
     
@@ -47,7 +47,7 @@ struct Vector list = Vector(sizeof(struct String));
 
     printVector(&list);
 
-    struct Vector list2 = Vector(sizeof(struct String));
+    struct Vector list2 = Vector(sizeof(struct String), 3);
     list2.pushBack(&list2, &str, sizeof(struct String));
     list2.pushBack(&list2, &str2, sizeof(struct String));
     list2.pushBack(&list2, &str3, sizeof(struct String));

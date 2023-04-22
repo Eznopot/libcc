@@ -23,7 +23,7 @@ struct List list = List(sizeof(struct String));
     struct String str2 = String("avec");
     struct String str3 = String("String");
 
-    float startTime = (float)clock();
+    float startTime = (float)clock()/CLOCKS_PER_SEC * 1000;
 
     for (int i = 0; i < 100000; i++) {
         list.pushBack(&list, &str, sizeof(struct String));
@@ -31,7 +31,7 @@ struct List list = List(sizeof(struct String));
         list.pushBack(&list, &str3, sizeof(struct String));
     }
 
-    float endTime = (float)clock();
+    float endTime = (float)clock()/CLOCKS_PER_SEC * 1000;
 
     float timeElapsed = endTime - startTime;
     

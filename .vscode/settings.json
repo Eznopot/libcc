@@ -3,6 +3,7 @@
         "vector.h": "c",
         "string.h": "c",
         "list.h": "c",
-        "include.h": "c"
+        "include.h": "c",
+        "time.h": "c"
     }
 }

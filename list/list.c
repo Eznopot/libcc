@@ -19,9 +19,10 @@ inline struct List List(size_t type)
         .insert = (&insertNode),
         .remove = (&removeNode),
         .reverse = (&reverseList),
-        .size = (&sizeList),
+        .type = type,
         .head = NULL,
         .tail = NULL,
+        .size = 0
     };
     return list;
 }
@@ -42,6 +43,7 @@ inline void _List(struct List *this)
                 free(tmp2->data);
             free(tmp2);
         }
+        this->size = 0;
     }
 }
 
@@ -96,7 +98,8 @@ int pushBackNode(struct List *this, void *data, int size)
         this->tail->next = node;
         this->tail = node;
     }
-    return 1;
+    this->size++;
+    return 0;
 }
 
 /**
@@ -119,7 +122,8 @@ int popBackNode(struct List *this)
     free(this->tail);
     this->tail = tmp;
     this->tail->next = NULL;
-    return 1;
+    this->size--;
+    return 0;
 }
 
 /**
@@ -135,7 +139,7 @@ int popBackNode(struct List *this)
  */
 struct List concatList(struct List *this, struct List *toAdd)
 {
-    struct List list = List(0);
+    struct List list = List(this->type);
     struct Node *tmp = this->head;
     while (tmp != NULL) {
         list.pushBack(&list, tmp->data, tmp->size);
@@ -146,6 +150,7 @@ struct List concatList(struct List *this, struct List *toAdd)
         list.pushBack(&list, tmp->data, tmp->size);
         tmp = tmp->next;
     }
+    list.size = this->size + toAdd->size;
     return list;
 }
 
@@ -168,13 +173,13 @@ struct List concatList(struct List *this, struct List *toAdd)
 int insertNode(struct List *this, void *data, int size, int index)
 {
     if (index < 0 || index > sizeList(this))
-        return 0;
+        return -1;
     struct Node *node = malloc(sizeof(struct Node));
     if (node == NULL)
-        return 0;
+        return 1;
     node->data = malloc(size);
     if (node->data == NULL)
-        return 0;
+        return -1;
     memcpy(node->data, data, size);
     node->size = size;
     node->next = NULL;
@@ -188,7 +193,8 @@ int insertNode(struct List *this, void *data, int size, int index)
         node->next = tmp->next;
         tmp->next = node;
     }
-    return 1;
+    this->size++;
+    return 0;
 }
 
 /**
@@ -207,7 +213,7 @@ int insertNode(struct List *this, void *data, int size, int index)
 int removeNode(struct List *this, int index)
 {
     if (index < 0 || index > sizeList(this))
-        return 0;
+        return -1;
     if (index == 0) {
         struct Node *tmp = this->head;
         this->head = this->head->next;
@@ -222,7 +228,8 @@ int removeNode(struct List *this, int index)
         free(tmp2->data);
         free(tmp2);
     }
-    return 1;
+    this->size--;
+    return 0;
 }
 
 /**
@@ -237,7 +244,7 @@ int removeNode(struct List *this, int index)
 int reverseList(struct List *this)
 {
     if (this->head == NULL)
-        return 0;
+        return -1;
     struct Node *tmp = this->head;
     struct Node *tmp2 = NULL;
     struct Node *tmp3 = NULL;
@@ -250,7 +257,7 @@ int reverseList(struct List *this)
     tmp = this->head;
     this->head = this->tail;
     this->tail = tmp;
-    return 1;
+    return 0;
 }
 
 /**

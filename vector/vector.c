@@ -9,20 +9,27 @@
  * 
  * @return A struct Vector object is being returned.
  */
-inline struct Vector Vector(size_t type) {
+inline struct Vector Vector(size_t type, int size) {
     struct Vector vector;
     vector.type = type;
-    vector.sizeElem = NULL;
-    vector.data = NULL;
+    if (size > 0) {
+        vector.data = malloc(sizeof(void *) * (size +1));
+        vector.data[0] = NULL;
+        vector.sizeElem = malloc(sizeof(int) * (size +1));
+        vector.sizeElem[0] = 0;
+    } else {
+        vector.sizeElem = NULL;
+        vector.data = NULL;
+    }
     vector.pushBack = (&pushBackElem);
     vector.popBack = (&popBackElem);
     vector.insert = (&insertElem);
     vector.remove = (&removeElem);
     vector.concat = (&concatVector);
     vector.reverse = (&reverseVector);
-    vector.size = (&sizeVector);
+    vector.size = 0;
     vector.sort = (&sortVector);
-    vector.mallocSize = 0;
+    vector.mallocSize = size;
     return vector;
 }
 
@@ -86,7 +93,7 @@ int pushBackElem(struct Vector *this, void *data, int size) {
         this->sizeElem = malloc(sizeof(int));
         this->sizeElem[0] = size;
     } else {
-        int len = this->size(this);
+        int len = this->size;
         if (len + 1 >= this->mallocSize) {
             this->mallocSize += 20;
             this->data = realloc(this->data, sizeof(void *) * (this->mallocSize));
@@ -97,6 +104,7 @@ int pushBackElem(struct Vector *this, void *data, int size) {
         this->data[len + 1] = NULL;
         this->sizeElem[len] = size;
     }
+    this->size++;
     return 0;
 }
 
@@ -113,11 +121,12 @@ int pushBackElem(struct Vector *this, void *data, int size) {
 int popBackElem(struct Vector *this) {
     if (this->data == NULL)
         return -1;
-    int len = this->size(this);
+    int len = this->size;
     if (len == 0)
         return -1;
     free(this->data[len - 1]);
     this->data[len - 1] = NULL;
+    this->size--;
     return 0;
 }
 
@@ -135,10 +144,11 @@ int popBackElem(struct Vector *this) {
  */
 struct Vector concatVector(struct Vector *this, struct Vector *toAdd) {
     if (this->type != toAdd->type) // si les type sont differents alors on return un vector vide
-        return Vector(this->type);
-    struct Vector res = Vector(this->type);
+        return Vector(this->type, 0);
     int l = 0;
-    int len = this->size(this) + this->size(toAdd);
+    int len = this->size + toAdd->size;
+    struct Vector res = Vector(this->type, 0);
+    res.size = len;
     res.data = malloc(sizeof(void *) * len + 15);
     res.mallocSize = len + 15;
     res.sizeElem = malloc(sizeof(int) * len);
@@ -186,7 +196,7 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
     } else if (this->data == NULL && index != 0) {
         return -1;
     } else {
-        int len = this->size(this);
+        int len = this->size;
         if (len + 1 >= this->mallocSize) {
             this->mallocSize += 20;
             this->data = realloc(this->data, sizeof(void *) * (this->mallocSize));
@@ -203,13 +213,14 @@ int insertElem(struct Vector *this, void *data, int size, int index) {
         }
         this->sizeElem[index] = size;
     }
+    this->size++;
     return 0;
 }
 
 int reverseVector(struct Vector *this) {
     if (this->data == NULL)
         return -1;
-    int len = this->size(this);
+    int len = this->size;
     void **tmp = malloc(sizeof(void *) * (this->mallocSize));
     int *tmpSize = malloc(sizeof(int) * (this->mallocSize));
     for (int i = 0; i < len; i++) {
@@ -240,7 +251,7 @@ int reverseVector(struct Vector *this) {
 int sortVector(struct Vector *this, int (*cmp)(const void *, const void *)) {
     if (this->data == NULL)
         return -1;
-    int len = this->size(this);
+    int len = this->size;
 
     qsort(this->data, len, sizeof(void *), cmp);
     return 0;
@@ -263,7 +274,7 @@ int sortVector(struct Vector *this, int (*cmp)(const void *, const void *)) {
 int removeElem(struct Vector *this, int index) {
     if (this->data == NULL)
         return -1;
-    int len = this->size(this);
+    int len = this->size;
     if (index >= len)
         return -1;
     free(this->data[index]);
@@ -276,6 +287,7 @@ int removeElem(struct Vector *this, int index) {
         this->sizeElem[i] = this->sizeElem[i + 1];
     }
     this->sizeElem = realloc(this->sizeElem, sizeof(int) * (len - 1));
+    this->size--;
     return 0;
 }
 

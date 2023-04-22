@@ -38,10 +38,11 @@ struct List {
     int (*insert)(struct List *, void *, int, int);
     int (*remove)(struct List *, int);
     int (*reverse)(struct List *);
-    int (*size)(struct List *);
+    int size;
 
     struct Node *head;
     struct Node *tail;
+    size_t type;
 };
 
 #endif /* LIST_H_ */
