@@ -11,30 +11,26 @@
 #include "../list/list.h"
 #include <time.h>
 
-int cmp(const void *a, const void *b) {
-    const int **a2 = (const int **)a;
-    const int **b2 = (const int **)b;
-    return **a2 - **b2;
-}
-
-int main(int argc, const char *argv[]) {
-struct List list = List(sizeof(struct String));
+int main(int argc, const char *argv[])
+{
+    struct List list = List(sizeof(struct String));
     struct String str = String("Test");
     struct String str2 = String("avec");
     struct String str3 = String("String");
 
-    float startTime = (float)clock()/CLOCKS_PER_SEC * 1000;
+    float startTime = (float)clock() / CLOCKS_PER_SEC * 1000;
 
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < 100000; i++)
+    {
         list.pushBack(&list, &str, sizeof(struct String));
         list.pushBack(&list, &str2, sizeof(struct String));
         list.pushBack(&list, &str3, sizeof(struct String));
     }
 
-    float endTime = (float)clock()/CLOCKS_PER_SEC * 1000;
+    float endTime = (float)clock() / CLOCKS_PER_SEC * 1000;
 
     float timeElapsed = endTime - startTime;
-    
+
     printf("Time elapsed: %f\n", timeElapsed);
     printList(&list);
 
