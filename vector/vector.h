@@ -15,6 +15,7 @@
 #include "../string/string.h"
 
 struct Vector Vector(size_t type, int size);
+struct Vector *new_Vector(size_t type, int size);
 void _Vector(struct Vector *this);
 int pushBackElem(struct Vector *this, void *data, int size);
 int popBackElem(struct Vector *this);
@@ -23,7 +24,7 @@ struct Vector concatVector(struct Vector *this, struct Vector *toAdd);
 int insertElem(struct Vector *this, void *data, int size, int pos);
 int removeElem(struct Vector *this, int pos);
 int reverseVector(struct Vector *this);
-int sortVector(struct Vector *this, int (cmp)(const void *, const void *));
+int sortVector(struct Vector *this, int(cmp)(const void *, const void *));
 
 int test(struct Vector *this);
 int printVector(struct Vector *this);
@@ -33,7 +34,8 @@ int printVector(struct Vector *this);
 ** if the type of the vector is already a ptr nothing change: int * -> int *, char * -> char *
 ** So you need to cast it if you want to retrieve the data
 */
-struct Vector {
+struct Vector
+{
     int (*pushBack)(struct Vector *, void *, int);
     int (*popBack)(struct Vector *);
     struct Vector (*concat)(struct Vector *, struct Vector *);
@@ -41,10 +43,10 @@ struct Vector {
     int (*remove)(struct Vector *, int);
     int size;
     int (*reverse)(struct Vector *);
-    int (*sort)(struct Vector *, int (const void *, const void *));
+    int (*sort)(struct Vector *, int(const void *, const void *));
 
     void **data;
-    int * sizeElem;
+    int *sizeElem;
     int mallocSize;
     size_t type; // sizeof(char *) par exemple
 };

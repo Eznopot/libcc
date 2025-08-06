@@ -11,13 +11,15 @@
 #include "../vector/vector.h"
 #include "../list/list.h"
 
-int cmp(const void *a, const void *b) {
+int cmp(const void *a, const void *b)
+{
     const int **a2 = (const int **)a;
     const int **b2 = (const int **)b;
     return **a2 - **b2;
 }
 
-int main(int argc, const char *argv[]) {
+int main(int argc, const char *argv[])
+{
     struct String *str = new_String("Hello Worlddddd");
     struct String str2 = String("This is a test");
     struct String str3 = String("Hope it works");
@@ -25,20 +27,23 @@ int main(int argc, const char *argv[]) {
     vec.pushBack(&vec, str, sizeof(*str));
     vec.pushBack(&vec, &str2, sizeof(str2));
     vec.pushBack(&vec, &str3, sizeof(str3));
-    for (int i = 0; i < vec.size; i++) {
+    for (int i = 0; i < vec.size; i++)
+    {
         struct String *str = (struct String *)vec.data[i];
         printf("%s\n", str->data);
     }
     printf("---------------------\n");
     struct String str4 = String("This is a new string");
     vec.insert(&vec, &str4, sizeof(struct String), 1);
-    for (int i = 0; i < vec.size; i++) {
+    for (int i = 0; i < vec.size; i++)
+    {
         struct String *str = (struct String *)vec.data[i];
         printf("%s\n", str->data);
     }
     printf("---------------------\n");
     vec.remove(&vec, 1);
-    for (int i = 0; i < vec.size; i++) {
+    for (int i = 0; i < vec.size; i++)
+    {
         struct String *str = (struct String *)vec.data[i];
         printf("%s\n", str->data);
     }
@@ -55,16 +60,18 @@ int main(int argc, const char *argv[]) {
     vec2.pushBack(&vec2, &(int){8}, sizeof(int *));
     vec2.pushBack(&vec2, &(int){3}, sizeof(int *));
 
-    for (int i = 0; i < vec2.size; i++) {
-       int *str = (int *)vec2.data[i];
+    for (int i = 0; i < vec2.size; i++)
+    {
+        int *str = (int *)vec2.data[i];
         printf("%d\n", *str);
     }
     printf("---------------------\n");
 
     vec2.sort(&vec2, cmp);
 
-    for (int i = 0; i < vec2.size; i++) {
-       int *str = (int *)vec2.data[i];
+    for (int i = 0; i < vec2.size; i++)
+    {
+        int *str = (int *)vec2.data[i];
         printf("%d\n", *str);
     }
     printf("---------------------\n");
@@ -84,8 +91,9 @@ int main(int argc, const char *argv[]) {
     concVec2.pushBack(&concVec2, &concStr2, sizeof(concStr2));
 
     struct Vector concVec3 = concVec.concat(&concVec, &concVec2);
-    
-    for (int i = 0; i < concVec3.size; i++) {
+
+    for (int i = 0; i < concVec3.size; i++)
+    {
         struct String *str = (struct String *)concVec3.data[i];
         printf("%s\n", str->data);
     }
@@ -98,7 +106,7 @@ int main(int argc, const char *argv[]) {
     _String(&concStr);
     _String(&concStr2);
     _String(&concStr3);
-    
+
     concVec = Vector(sizeof(char *), 0);
     concVec.pushBack(&concVec, &"Hello", sizeof(char) * 6);
     concVec.pushBack(&concVec, &"Debut", sizeof(char) * 6);
@@ -110,7 +118,8 @@ int main(int argc, const char *argv[]) {
 
     concVec3 = concVec.concat(&concVec, &concVec2);
 
-    for (int i = 0; i < concVec3.size; i++) {
+    for (int i = 0; i < concVec3.size; i++)
+    {
         char *str = (char *)concVec3.data[i];
         printf("%s\n", str);
     }
@@ -118,7 +127,8 @@ int main(int argc, const char *argv[]) {
 
     concVec3.reverse(&concVec3);
 
-    for (int i = 0; i < concVec3.size; i++) {
+    for (int i = 0; i < concVec3.size; i++)
+    {
         char *str = (char *)concVec3.data[i];
         printf("%s\n", str);
     }
@@ -127,7 +137,6 @@ int main(int argc, const char *argv[]) {
     _Vector(&concVec);
     _Vector(&concVec2);
     _Vector(&concVec3);
-
 
     struct List list = List(sizeof(struct String));
     str = new_String("Test");

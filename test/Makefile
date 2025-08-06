@@ -11,11 +11,14 @@ MAIN_list =	main_list.c
 
 MAIN_vector =	main_vector.c
 
+MAIN_gc =	main_gc.c
+
 SRC =	../my_strlen.c \
 		../str_to_array.c \
 		../string/string.c \
 		../vector/vector.c \
 		../list/list.c \
+		../GC/gc.c \
 
 COMP =	gcc -g3
 
@@ -46,5 +49,7 @@ fclean: clean
 	rm -f $(NAME)
 	rm -f list
 	rm -f vector
+	rm -f gc
+	rm -r *.dSYM
 
 re: all clean
